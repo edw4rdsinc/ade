@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { sanityFetch, queries } from "@/lib/sanity";
 import { SpeakingForm } from "@/components/SpeakingForm";
 
 export const metadata: Metadata = {
@@ -7,38 +8,17 @@ export const metadata: Metadata = {
     "Book Dr. Andrew David Edwards for speaking engagements on money, capitalism, and the American Revolution.",
 };
 
-const speakingTopics = [
-  {
-    title: "Who Gets to Make Money?",
-    subtitle: "History, Cryptocurrency, and Democratic Control",
-    description:
-      "From colonial paper money to Bitcoin, the question of who controls currency creation has defined American political economy. This talk explores how the founding-era debates over money illuminate—and complicate—contemporary discussions of cryptocurrency and central bank digital currencies.",
-    audiences: ["General public", "Finance professionals", "Policy forums"],
-  },
-  {
-    title: "Why History Matters Now",
-    subtitle: "Money, Power, and Democratic Control",
-    description:
-      "Money is not a technical matter to be left to experts—it is a constitutional question about how we govern ourselves and distribute power in society. This talk recovers the founders' understanding of money as a political institution and applies it to today's debates.",
-    audiences: ["Academic conferences", "Policy institutes", "Media"],
-  },
-  {
-    title: "Money and the Making of the American Revolution",
-    subtitle: "New Research on the Monetary Origins of American Independence",
-    description:
-      "A presentation of the core arguments from the new Princeton University Press book, demonstrating how the Revolution was fundamentally about monetary sovereignty—not just taxation without representation.",
-    audiences: ["Academic conferences", "Universities", "Historical societies"],
-  },
-  {
-    title: "The Global History of Capitalism",
-    subtitle: "Connecting American Money to World Systems",
-    description:
-      "How did American monetary struggles connect to the transatlantic slave trade, the East India Company, and violence against Native Americans? This talk situates the American Revolution within global systems of money and power.",
-    audiences: ["Academic audiences", "Global affairs forums"],
-  },
-];
+interface SpeakingTopic {
+  _id: string;
+  title: string;
+  subtitle?: string;
+  description: string;
+  audiences?: string[];
+}
 
-export default function SpeakingPage() {
+export default async function SpeakingPage() {
+  const speakingTopics = await sanityFetch<SpeakingTopic[]>(queries.allSpeakingTopics);
+
   return (
     <>
       {/* Header */}
@@ -60,30 +40,34 @@ export default function SpeakingPage() {
           <div className="accent-line mb-12"></div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {speakingTopics.map((topic, index) => (
+            {speakingTopics.map((topic) => (
               <article
-                key={index}
+                key={topic._id}
                 className="bg-white p-8 border border-[var(--color-border)]"
               >
                 <h3 className="text-xl font-bold text-[var(--color-navy)] mb-1">
                   {topic.title}
                 </h3>
-                <p className="text-[var(--color-gold)] text-sm font-semibold mb-4">
-                  {topic.subtitle}
-                </p>
+                {topic.subtitle && (
+                  <p className="text-[var(--color-gold)] text-sm font-semibold mb-4">
+                    {topic.subtitle}
+                  </p>
+                )}
                 <p className="text-[var(--color-text-muted)] leading-relaxed mb-4">
                   {topic.description}
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  {topic.audiences.map((audience, i) => (
-                    <span
-                      key={i}
-                      className="text-xs bg-[var(--color-warm-white)] text-[var(--color-text-muted)] px-3 py-1"
-                    >
-                      {audience}
-                    </span>
-                  ))}
-                </div>
+                {topic.audiences && topic.audiences.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {topic.audiences.map((audience, i) => (
+                      <span
+                        key={i}
+                        className="text-xs bg-[var(--color-warm-white)] text-[var(--color-text-muted)] px-3 py-1"
+                      >
+                        {audience}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </article>
             ))}
           </div>

@@ -1,6 +1,17 @@
 import Link from "next/link";
+import { sanityFetch, queries } from "@/lib/sanity";
 
-export default function Home() {
+interface Testimonial {
+  _id: string;
+  quote: string;
+  author: string;
+  affiliation?: string;
+  context?: string;
+}
+
+export default async function Home() {
+  const testimonials = await sanityFetch<Testimonial[]>(queries.bookTestimonials);
+
   return (
     <>
       {/* Hero Section */}
@@ -44,7 +55,7 @@ export default function Home() {
                       Andrew David Edwards
                     </p>
                     <p className="text-gray-400 text-sm mt-4">
-                      Available January 2026
+                      Available December 2025
                     </p>
                   </div>
                 </div>
@@ -155,25 +166,19 @@ export default function Home() {
           <div className="accent-line mx-auto mb-12"></div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <blockquote className="bg-white p-8 border-l-4 border-[var(--color-gold)]">
-              <p className="text-lg italic mb-4 leading-relaxed">
-                &ldquo;A brilliant history that opens money and its making to view.&rdquo;
-              </p>
-              <footer className="text-[var(--color-text-muted)]">
-                <strong>Christine Desan</strong>
-                <span className="block text-sm">Harvard Law School</span>
-              </footer>
-            </blockquote>
-
-            <blockquote className="bg-white p-8 border-l-4 border-[var(--color-gold)]">
-              <p className="text-lg italic mb-4 leading-relaxed">
-                &ldquo;One of the most important recent books on the coming of the American Revolution.&rdquo;
-              </p>
-              <footer className="text-[var(--color-text-muted)]">
-                <strong>Eliga Gould</strong>
-                <span className="block text-sm">Historian</span>
-              </footer>
-            </blockquote>
+            {testimonials.slice(0, 2).map((testimonial) => (
+              <blockquote key={testimonial._id} className="bg-white p-8 border-l-4 border-[var(--color-gold)]">
+                <p className="text-lg italic mb-4 leading-relaxed">
+                  &ldquo;{testimonial.quote}&rdquo;
+                </p>
+                <footer className="text-[var(--color-text-muted)]">
+                  <strong>{testimonial.author}</strong>
+                  {testimonial.affiliation && (
+                    <span className="block text-sm">{testimonial.affiliation}</span>
+                  )}
+                </footer>
+              </blockquote>
+            ))}
           </div>
         </div>
       </section>

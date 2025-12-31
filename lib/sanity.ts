@@ -1,5 +1,5 @@
 import { createClient } from "@sanity/client";
-import imageUrlBuilder from "@sanity/image-url";
+import { createImageUrlBuilder } from "@sanity/image-url";
 
 interface SanityImage {
   _type: "image";
@@ -20,7 +20,7 @@ export const client = createClient({
   useCdn: process.env.NODE_ENV === "production",
 });
 
-const builder = imageUrlBuilder(client);
+const builder = createImageUrlBuilder(client);
 
 export function urlFor(source: SanityImage) {
   return builder.image(source);

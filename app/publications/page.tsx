@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { sanityFetch, queries } from "@/lib/sanity";
 
 export const metadata: Metadata = {
   title: "Publications",
@@ -6,61 +7,25 @@ export const metadata: Metadata = {
     "Academic publications by Dr. Andrew David Edwards on money, capitalism, and the American Revolution.",
 };
 
-const publications = [
-  {
-    type: "Book",
-    title: "Money and the Making of the American Revolution",
-    venue: "Princeton University Press",
-    year: "2025",
-    description:
-      "A groundbreaking reinterpretation of the American Revolution as fundamentally a monetary conflict.",
-    link: "https://press.princeton.edu/books/hardcover/9780691200262/money-and-the-making-of-the-american-revolution",
-  },
-  {
-    type: "Article",
-    title: "Grenville's Silver Hammer: The Problem of Money in the Stamp Act Crisis",
-    venue: "Journal of American History",
-    year: "2017",
-    volume: "Vol. 104, Issue 2, pp. 337–362",
-    doi: "10.1093/jahist/jax172",
-    description:
-      "Demonstrates how Parliament's insistence on silver payments created an impossible paradox—a law that made the operation of law impossible—providing a new explanation for colonial resistance to the Stamp Act.",
-  },
-  {
-    type: "Article",
-    title: "The American Revolution and Christine Desan's New History of Money",
-    venue: "Law & Social Inquiry",
-    year: "2017",
-    doi: "10.1111/lsi.12224",
-    description:
-      "A review essay examining how Desan's Making Money intervenes in debates over money's origins while demonstrating its analytical tools for understanding the American Revolution's role in capitalism's expansion.",
-  },
-  {
-    type: "Article",
-    title: "The Era of Chinese Global Hegemony: Denaturalizing Money in the Early Modern World",
-    venue: "L'Atelier du Centre de recherches historiques",
-    year: "2018",
-    volume: "No. 18",
-    coauthors: "With Fabian Steininger and Andrea Giorgio Tosato",
-    link: "https://journals.openedition.org/acrh/8076",
-    description:
-      "Argues that silver's 'natural' status as money was an ideological effect of Chinese domination of the early modern global monetary system.",
-    openAccess: true,
-  },
-  {
-    type: "Article",
-    title: "Capitalism In Global History",
-    venue: "Past & Present",
-    year: "2020",
-    volume: "Vol. 249, Issue 1, pp. e1–e32",
-    doi: "10.1093/pastj/gtaa044",
-    coauthors: "With Peter Hill and Juan Neves-Sarriegui",
-    description:
-      "Introduction to a curated virtual issue exploring intersections between global history and the history of capitalism.",
-  },
-];
+interface Publication {
+  _id: string;
+  title: string;
+  type: string;
+  venue: string;
+  year: string;
+  volume?: string;
+  coauthors?: string;
+  doi?: string;
+  link?: string;
+  pdfUrl?: string;
+  openAccess?: boolean;
+  abstract?: string;
+  featured?: boolean;
+}
 
-export default function PublicationsPage() {
+export default async function PublicationsPage() {
+  const publications = await sanityFetch<Publication[]>(queries.allPublications);
+
   return (
     <>
       {/* Header */}
@@ -78,9 +43,9 @@ export default function PublicationsPage() {
       <section className="section">
         <div className="mx-auto max-w-6xl px-6">
           <div className="space-y-12">
-            {publications.map((pub, index) => (
+            {publications.map((pub) => (
               <article
-                key={index}
+                key={pub._id}
                 className="bg-white p-8 border border-[var(--color-border)] hover:border-[var(--color-gold)] transition-colors"
               >
                 <div className="flex flex-wrap gap-3 mb-4">
@@ -123,9 +88,11 @@ export default function PublicationsPage() {
                   </p>
                 )}
 
-                <p className="text-[var(--color-text-muted)] leading-relaxed mb-4">
-                  {pub.description}
-                </p>
+                {pub.abstract && (
+                  <p className="text-[var(--color-text-muted)] leading-relaxed mb-4">
+                    {pub.abstract}
+                  </p>
+                )}
 
                 {pub.doi && (
                   <p className="text-sm">
