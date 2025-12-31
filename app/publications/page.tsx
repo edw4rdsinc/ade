@@ -11,7 +11,7 @@ const publications = [
     type: "Book",
     title: "Money and the Making of the American Revolution",
     venue: "Princeton University Press",
-    year: "2026",
+    year: "2025",
     description:
       "A groundbreaking reinterpretation of the American Revolution as fundamentally a monetary conflict.",
     link: "https://press.princeton.edu/books/hardcover/9780691200262/money-and-the-making-of-the-american-revolution",
