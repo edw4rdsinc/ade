@@ -39,27 +39,14 @@ export default async function Home() {
               </div>
             </div>
 
-            {/* Book Cover Placeholder */}
+            {/* Book Cover */}
             <div className="flex justify-center lg:justify-end">
               <div className="relative">
-                <div className="bg-[var(--color-navy)] p-8 shadow-2xl max-w-sm">
-                  <div className="border-2 border-[var(--color-gold)] p-6 text-center">
-                    <p className="text-[var(--color-gold)] text-sm uppercase tracking-widest mb-4">
-                      Princeton University Press
-                    </p>
-                    <h2 className="text-white text-2xl font-bold mb-4 font-[family-name:var(--font-playfair)]">
-                      Money and the Making of the American Revolution
-                    </h2>
-                    <div className="w-12 h-0.5 bg-[var(--color-gold)] mx-auto mb-4"></div>
-                    <p className="text-gray-300 text-lg">
-                      Andrew David Edwards
-                    </p>
-                    <p className="text-gray-400 text-sm mt-4">
-                      Available December 2025
-                    </p>
-                  </div>
-                </div>
-                {/* Decorative element */}
+                <img
+                  src="/ade-book-cover.avif"
+                  alt="Money and the Making of the American Revolution by Andrew David Edwards"
+                  className="shadow-2xl max-w-sm w-full"
+                />
                 <div className="absolute -bottom-4 -right-4 w-full h-full border-2 border-[var(--color-gold)] -z-10"></div>
               </div>
             </div>

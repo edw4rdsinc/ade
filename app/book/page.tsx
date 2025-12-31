@@ -35,23 +35,11 @@ export default async function BookPage() {
             {/* Book Cover */}
             <div className="flex justify-center">
               <div className="relative">
-                <div className="bg-[var(--color-navy)] p-10 shadow-2xl max-w-md">
-                  <div className="border-2 border-[var(--color-gold)] p-8 text-center">
-                    <p className="text-[var(--color-gold)] text-sm uppercase tracking-widest mb-6">
-                      Princeton University Press
-                    </p>
-                    <h2 className="text-white text-3xl font-bold mb-6 font-[family-name:var(--font-playfair)] leading-tight">
-                      Money and the Making of the American Revolution
-                    </h2>
-                    <div className="w-16 h-0.5 bg-[var(--color-gold)] mx-auto mb-6"></div>
-                    <p className="text-gray-300 text-xl mb-6">
-                      Andrew David Edwards
-                    </p>
-                    <p className="text-gray-400 text-sm">
-                      360 pages | ISBN: 9780691200262
-                    </p>
-                  </div>
-                </div>
+                <img
+                  src="/ade-book-cover.avif"
+                  alt="Money and the Making of the American Revolution by Andrew David Edwards - Book Cover"
+                  className="shadow-2xl max-w-md w-full"
+                />
                 <div className="absolute -bottom-4 -right-4 w-full h-full border-2 border-[var(--color-gold)] -z-10"></div>
               </div>
             </div>
